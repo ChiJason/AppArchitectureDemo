@@ -1,6 +1,7 @@
 package android.chi.jason.cleanarchitecturedemo.ui
 
 
+import android.chi.jason.cleanarchitecturedemo.MainActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,17 +9,32 @@ import android.view.View
 import android.view.ViewGroup
 
 import android.chi.jason.cleanarchitecturedemo.R
+import android.chi.jason.cleanarchitecturedemo.db.TaskEntity
 import android.chi.jason.cleanarchitecturedemo.di.Injectable
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.fragment_task.*
 import javax.inject.Inject
 
-class TaskFragment : Fragment(), Injectable {
+class TaskFragment : Fragment(), TaskAdapter.OnItemClickListener, Injectable {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
+    private val viewModel by lazy {
+        ViewModelProviders.of(context as MainActivity, viewModelFactory).get(TaskViewModel::class.java)
+    }
+
+    private val listAdapter by lazy {
+        TaskAdapter().apply {
+            setOnItemClickListener(this@TaskFragment)
+        }
+    }
+
     companion object {
-        fun newIntance() = TaskFragment()
+        fun newInstance() = TaskFragment()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -27,6 +43,27 @@ class TaskFragment : Fragment(), Injectable {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        addTaskFab.setOnClickListener {
+
+        }
+        taskRv.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(context)
+            adapter = listAdapter
+        }
+
+        viewModel.taskList.observe(this, Observer {
+            listAdapter.updateData(it)
+        })
+        viewModel.loadTasks()
     }
 
+    override fun onItemClick(task: TaskEntity) {
+        viewModel.selectedTask.value = task
+    }
+
+    override fun onItemToggled(active: Boolean, task: TaskEntity) {
+
+    }
 }

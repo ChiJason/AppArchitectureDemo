@@ -1,5 +1,6 @@
 package android.chi.jason.cleanarchitecturedemo.di
 
+import android.app.Application
 import android.chi.jason.cleanarchitecturedemo.MyApp
 import android.chi.jason.cleanarchitecturedemo.db.AppDatabase
 import android.chi.jason.cleanarchitecturedemo.db.TaskDao
@@ -13,7 +14,7 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideDb(myApp: MyApp): AppDatabase {
+    fun provideDb(myApp: Application): AppDatabase {
         return Room.databaseBuilder(myApp, AppDatabase::class.java, "task.db")
                 .allowMainThreadQueries()
                 .build()

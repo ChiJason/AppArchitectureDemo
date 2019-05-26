@@ -1,9 +1,11 @@
 package android.chi.jason.cleanarchitecturedemo
 
+import android.chi.jason.cleanarchitecturedemo.ui.TaskFragment
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -12,6 +14,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+
+        setFragment(TaskFragment.newInstance())
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -24,5 +28,11 @@ class MainActivity : AppCompatActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun setFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+                .add(R.id.container, fragment)
+                .commitAllowingStateLoss()
     }
 }
