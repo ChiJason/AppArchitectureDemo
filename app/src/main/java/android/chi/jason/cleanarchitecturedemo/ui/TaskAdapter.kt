@@ -61,6 +61,8 @@ class TaskAdapter(private var taskList: MutableList<TaskEntity> = mutableListOf(
     inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
 
         fun setupView(task: TaskEntity) = itemView.apply {
+            setOnClickListener(this@TaskViewHolder)
+            checkbox.setOnClickListener(this@TaskViewHolder)
             task.apply {
                 text_description.text = description
                 if (isComplete == 1) {

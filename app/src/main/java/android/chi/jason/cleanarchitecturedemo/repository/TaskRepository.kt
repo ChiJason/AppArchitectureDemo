@@ -8,16 +8,20 @@ import javax.inject.Inject
 class TaskRepository @Inject constructor(
     private val taskDao: TaskDao) {
 
+    fun addTask(vararg taskEntity: TaskEntity) {
+        taskDao.insertTask(*taskEntity)
+    }
+
     fun getAllTasks(): Single<MutableList<TaskEntity>> {
         return taskDao.getAllTasks()
     }
 
-    fun updateIsCompleteById(isComplete: Boolean, id: Int) {
-        taskDao.updateIsCompleteById(if (isComplete) 1 else 0, id)
+    fun getAllTasksSortByDueDate(): Single<MutableList<TaskEntity>> {
+        return taskDao.getAllTasksSortByDueDate()
     }
 
-    fun updateIsPriorityById(isPriority: Boolean, id: Int) {
-        taskDao.updateIsPriorityById(if (isPriority) 1 else 0, id)
+    fun updateIsCompleteById(isComplete: Boolean, id: Int) {
+        taskDao.updateIsCompleteById(if (isComplete) 1 else 0, id)
     }
 
     fun deleteTask(id: Int) {

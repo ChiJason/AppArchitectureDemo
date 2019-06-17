@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CleanArchitectureDemo</string>
+    <string name="app_name">AppArchitectureDemo</string>
     <string name="task_description">What Needs to Get Done?</string>
     <string name="task_priority">Priority Task</string>
     <string name="task_date">Due Date</string>

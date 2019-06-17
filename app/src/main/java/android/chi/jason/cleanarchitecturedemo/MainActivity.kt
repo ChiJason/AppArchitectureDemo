@@ -1,5 +1,6 @@
 package android.chi.jason.cleanarchitecturedemo
 
+import android.chi.jason.cleanarchitecturedemo.ui.SettingFragment
 import android.chi.jason.cleanarchitecturedemo.ui.TaskFragment
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if (item?.itemId == R.id.action_settings) {
+            setFragment(SettingFragment.newInstance())
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -32,7 +34,16 @@ class MainActivity : AppCompatActivity() {
 
     fun setFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
-                .add(R.id.container, fragment)
-                .commitAllowingStateLoss()
+            .replace(R.id.container, fragment)
+            .commitAllowingStateLoss()
+    }
+
+    override fun onBackPressed() {
+        val visibleFragment = supportFragmentManager.fragments[0]
+        if (visibleFragment is TaskFragment) {
+            finish()
+        } else {
+            setFragment(TaskFragment.newInstance())
+        }
     }
 }

@@ -14,6 +14,7 @@ import android.chi.jason.cleanarchitecturedemo.di.Injectable
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_task.*
 import javax.inject.Inject
@@ -45,7 +46,7 @@ class TaskFragment : Fragment(), TaskAdapter.OnItemClickListener, Injectable {
         super.onActivityCreated(savedInstanceState)
 
         addTaskFab.setOnClickListener {
-
+            (context as MainActivity).setFragment(AddTaskFragment.newInstance())
         }
         taskRv.apply {
             setHasFixedSize(true)
@@ -56,14 +57,21 @@ class TaskFragment : Fragment(), TaskAdapter.OnItemClickListener, Injectable {
         viewModel.taskList.observe(this, Observer {
             listAdapter.updateData(it)
         })
-        viewModel.loadTasks()
+        if (PreferenceManager.getDefaultSharedPreferences(context)
+                .getString(resources.getString(R.string.pref_sortBy_key),
+                    resources.getString(R.string.pref_sortBy_default)) == resources.getString(R.string.pref_sortBy_due)) {
+            viewModel.loadTasksSortByDueDate()
+        } else {
+            viewModel.loadTasks()
+        }
     }
 
     override fun onItemClick(task: TaskEntity) {
         viewModel.selectedTask.value = task
+        (context as MainActivity).setFragment(TaskDetailFragment.newInstance())
     }
 
     override fun onItemToggled(active: Boolean, task: TaskEntity) {
-
+        viewModel.updateTaskCompletion(active, task.id)
     }
 }
