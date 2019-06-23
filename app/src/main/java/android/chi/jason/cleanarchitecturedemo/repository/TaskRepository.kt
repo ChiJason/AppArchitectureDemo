@@ -2,11 +2,13 @@ package android.chi.jason.cleanarchitecturedemo.repository
 
 import android.chi.jason.cleanarchitecturedemo.db.TaskDao
 import android.chi.jason.cleanarchitecturedemo.db.TaskEntity
+import android.chi.jason.cleanarchitecturedemo.testing.Mockable
 import io.reactivex.Single
 import javax.inject.Inject
 
+@Mockable
 class TaskRepository @Inject constructor(
-    private val taskDao: TaskDao) {
+        private val taskDao: TaskDao) {
 
     fun addTask(vararg taskEntity: TaskEntity) {
         taskDao.insertTask(*taskEntity)

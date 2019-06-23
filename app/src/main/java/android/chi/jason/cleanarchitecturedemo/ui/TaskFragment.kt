@@ -58,8 +58,8 @@ class TaskFragment : Fragment(), TaskAdapter.OnItemClickListener, Injectable {
             listAdapter.updateData(it)
         })
         if (PreferenceManager.getDefaultSharedPreferences(context)
-                .getString(resources.getString(R.string.pref_sortBy_key),
-                    resources.getString(R.string.pref_sortBy_default)) == resources.getString(R.string.pref_sortBy_due)) {
+                        .getString(resources.getString(R.string.pref_sortBy_key),
+                                resources.getString(R.string.pref_sortBy_default)) == resources.getString(R.string.pref_sortBy_due)) {
             viewModel.loadTasksSortByDueDate()
         } else {
             viewModel.loadTasks()

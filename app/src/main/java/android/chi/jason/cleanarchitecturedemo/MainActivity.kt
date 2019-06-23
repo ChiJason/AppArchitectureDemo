@@ -34,8 +34,8 @@ class MainActivity : AppCompatActivity() {
 
     fun setFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.container, fragment)
-            .commitAllowingStateLoss()
+                .replace(R.id.container, fragment)
+                .commitAllowingStateLoss()
     }
 
     override fun onBackPressed() {
