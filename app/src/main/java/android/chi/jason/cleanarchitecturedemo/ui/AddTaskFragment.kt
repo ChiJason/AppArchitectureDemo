@@ -48,7 +48,7 @@ class AddTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener, Injectab
             val month = c.get(Calendar.MONTH)
             val day = c.get(Calendar.DAY_OF_MONTH)
 
-            DatePickerDialog(context, this, year, month, day).apply {
+            DatePickerDialog(context!!, this, year, month, day).apply {
                 datePicker.minDate = System.currentTimeMillis()
             }.show()
         }
@@ -63,15 +63,15 @@ class AddTaskFragment : Fragment(), DatePickerDialog.OnDateSetListener, Injectab
         })
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.menu_add_task, menu)
-        menu?.findItem(R.id.action_settings)?.isVisible = false
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_add_task, menu)
+        menu.findItem(R.id.action_settings)?.isVisible = false
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         //noinspection SimplifiableIfStatement
-        if (item?.itemId == R.id.action_save) {
+        if (item.itemId == R.id.action_save) {
             //save item
             if (text_input_description.text.toString().trim().isEmpty()) {
                 Toast.makeText(context, "description can't be blank", Toast.LENGTH_SHORT).show()

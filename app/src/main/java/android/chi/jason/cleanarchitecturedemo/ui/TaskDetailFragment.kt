@@ -46,14 +46,14 @@ class TaskDetailFragment : Fragment(), Injectable {
         })
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.menu_task_detail, menu)
-        menu?.findItem(R.id.action_settings)?.isVisible = false
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_task_detail, menu)
+        menu.findItem(R.id.action_settings)?.isVisible = false
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item?.itemId == R.id.action_delete) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.action_delete) {
             viewModel.deleteTask(viewModel.selectedTask.value!!.id)
             (context as MainActivity).setFragment(TaskFragment.newInstance())
             return true

@@ -12,7 +12,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.list_item_task.view.*
 
-class TaskAdapter(private var taskList: MutableList<TaskEntity> = mutableListOf()
+class TaskAdapter(
+        private var taskList: MutableList<TaskEntity> = mutableListOf()
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     private var onItemClickListener: OnItemClickListener? = null
@@ -58,20 +59,16 @@ class TaskAdapter(private var taskList: MutableList<TaskEntity> = mutableListOf(
         onItemClickListener?.onItemClick(taskList[holder.adapterPosition])
     }
 
-    inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    inner class TaskViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView),
+            View.OnClickListener {
 
         fun setupView(task: TaskEntity) = itemView.apply {
             setOnClickListener(this@TaskViewHolder)
             checkbox.setOnClickListener(this@TaskViewHolder)
             task.apply {
                 text_description.text = description
-                if (isComplete == 1) {
-                    text_description.setState(TaskTitleView.DONE)
-                    checkbox.isChecked = true
-                } else {
-                    text_description.setState(TaskTitleView.NORMAL)
-                    checkbox.isChecked = false
-                }
+                text_description.setState(if (isComplete == 1) TaskTitleView.DONE else TaskTitleView.NORMAL)
+                checkbox.isChecked = isComplete == 1
                 if (hasDueDate()) {
                     text_date.text = DateUtils.getRelativeTimeSpanString(dueDateMills)
                     text_date.visibility = View.VISIBLE
@@ -94,19 +91,20 @@ class TaskAdapter(private var taskList: MutableList<TaskEntity> = mutableListOf(
         }
     }
 
-    class TaskDiffCallback(private val oldList: MutableList<TaskEntity>,
-                           private val newList: MutableList<TaskEntity>) : DiffUtil.Callback() {
+    class TaskDiffCallback(
+            private val oldList: MutableList<TaskEntity>,
+            private val newList: MutableList<TaskEntity>) : DiffUtil.Callback() {
 
         override fun getOldListSize() = oldList.size
 
         override fun getNewListSize() = newList.size
 
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) = run {
-            oldList[oldItemPosition].id == newList[newItemPosition].id
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
         }
 
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) = run {
-            oldList[oldItemPosition].id == newList[newItemPosition].id
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
         }
     }
 }
